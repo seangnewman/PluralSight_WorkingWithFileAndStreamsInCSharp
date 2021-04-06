@@ -89,8 +89,7 @@ namespace DataProcessor
                     Console.WriteLine($"{extension} is an unsupported file type.");
                     break;
             }
-
-            
+          
 
             //File.Move(inProgressFilePath, completedFilePath);
             Console.WriteLine($"Completed processing of {inProgressFilePath}");
