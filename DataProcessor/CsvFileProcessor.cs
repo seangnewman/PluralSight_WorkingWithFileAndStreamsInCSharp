@@ -5,25 +5,36 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.IO.Abstractions;
 
 namespace DataProcessor
 {
-    internal class CsvFileProcessor
+
+
+    public  class CsvFileProcessor
     {
+
+        private readonly IFileSystem _fileSystem;
         public string InputFilePath { get;  }
         public string OutputFilePath { get;  }
 
-        public CsvFileProcessor(string inputFilePath, string outputFilePath)
+        public CsvFileProcessor(string inputFilePath, string outputFilePath):
+            this(inputFilePath, outputFilePath, new FileSystem())
+        {
+
+        }
+        public CsvFileProcessor(string inputFilePath, string outputFilePath, IFileSystem fileSystem)
         {
             InputFilePath = inputFilePath;
             OutputFilePath = outputFilePath;
+            _fileSystem = fileSystem;
         }
 
-        internal void Process()
+        public void Process()
         {
-            using (StreamReader input = File.OpenText(InputFilePath))
+            using (StreamReader input = _fileSystem.File.OpenText(InputFilePath))
             using(CsvReader csvReader = new CsvReader(input))
-            using(StreamWriter output = File.CreateText(OutputFilePath))
+            using(StreamWriter output = _fileSystem.File.CreateText(OutputFilePath))
              using( var csvWriter = new CsvWriter(output))
             {
                  
